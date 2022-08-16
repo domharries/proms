@@ -1,0 +1,33 @@
+name: Build and deploy
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.18
+
+    - name: Build
+      run: go build
+
+    - name: Set up ssh-agent
+      uses: webfactory/ssh-agent@v0.5.4
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Add leb.harries.name as known host
+      run: "cp .github/workflows/known_hosts ~/.ssh"
+
+    - name: Deploy
+      run: |
+        rsync proms proms.html.tmpl style.css github@h5s.org:proms/
+        ssh github@h5s.org sudo systemctl restart proms
+

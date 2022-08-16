@@ -1,0 +1,59 @@
+body {
+  font-family: sans-serif;
+  color: #333; 
+}
+
+@media (min-width: 900px) {
+  main {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    column-gap: 1px;
+    row-gap: 1px;
+  }
+}
+
+div.day {
+  border: 1px solid #ddd;
+  padding: 2px;
+}
+
+h2 {
+  font-size: 90%;
+  margin: 0;
+  color: #11b2e0;
+  font-weight: 300;
+}
+
+h3 a {
+  margin: 0.5em 0;
+  font-size: 100%;
+  font-weight: 400;
+  color: #6bd1a2;
+}
+
+.details {
+  margin: 0 1em;
+}
+
+.performers {
+  font-size: 70%;
+  font-style: italic;
+}
+
+.programme {
+  font-size: 80%;
+  list-style-type: none;
+  padding: 0;
+}
+
+.programme li {
+  margin-bottom: 0.5em;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  column-gap: 0.5em;
+}
+
+.programme .composer {
+  font-weight: bold;
+  text-align: right;
+}

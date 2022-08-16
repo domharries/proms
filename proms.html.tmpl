@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<title>Proms</title>
+
+<link rel="stylesheet" href="/static/style.css">
+
+<main>
+{{range .}}
+  <div class="day" id="{{.Date.Format "2006-01-02"}}"
+      style="grid-column-start: {{.Date.Weekday | printf "%d"}}">
+    <h2>
+      {{.Date.Format "Mon 2"}}
+      {{if eq .Date.Day 1}}{{.Date.Format "Jan"}}{{end}}
+    </h2>
+      {{range .Proms}}
+        <div class="prom">
+          <h3><a href="{{.Url}}">{{.Time}} - {{.Name}} ({{.Location}})</a></h3>
+          <div class="details">
+            <ul class="programme">
+              {{range .Programme}}
+                <li>
+                  <span class="composer">{{.Composer}}</span>
+                  <span class="name">{{.Name}}</span>
+                </li>
+              {{end}}
+            </ul>
+            <p class="performers">
+              {{range $i, $p := .Performers}}
+                {{if lt $i 4}}
+                  {{if $i}}/{{end}}
+                  {{$p.Name}}{{if $p.Role}} ({{$p.Role}}){{end}}
+                {{end}}
+              {{end}}
+            </p>
+          </div>
+        </div>
+      {{end}}
+  </div>
+{{end}}
+</main>
+
+<script>
+  const today = document.getElementById(new Date().toISOString().split("T")[0]);
+  today.style.borderColor = "red";
+  today.scrollIntoView();
+</script>
+

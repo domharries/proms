@@ -14,25 +14,33 @@ body {
 
 div.day {
   border: 1px solid #ddd;
-  padding: 2px;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+div.today {
+  border: 2px solid cornflowerblue;
 }
 
 h2 {
   font-size: 90%;
   margin: 0;
-  color: #11b2e0;
+  color: slateblue;
   font-weight: 300;
 }
 
-h3 a {
+h3 {
   margin: 0.5em 0;
-  font-size: 100%;
+  font-size: 90%;
   font-weight: 400;
-  color: #6bd1a2;
+}
+
+h3 a {
+  color: darkslateblue;
 }
 
 .details {
-  margin: 0 1em;
+  margin: 0 0.5em;
 }
 
 .performers {

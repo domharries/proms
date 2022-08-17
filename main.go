@@ -38,8 +38,9 @@ type Performer struct {
 }
 
 func main() {
-	http.HandleFunc("/proms", promsList)
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir(""))))
+	http.HandleFunc("/proms/", promsList)
+	http.Handle("/proms/static/",
+		http.StripPrefix("/proms/static/", http.FileServer(http.Dir(""))))
 	http.ListenAndServe(":1895", nil)
 }
 

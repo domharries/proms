@@ -26,7 +26,6 @@ div.today {
 }
 
 h2 {
-  font-size: 90%;
   margin: 0;
   color: slateblue;
   font-weight: 300;
@@ -34,7 +33,7 @@ h2 {
 
 h3 {
   margin: 0.5em 0;
-  font-size: 90%;
+  font-size: 95%;
   font-weight: 400;
 }
 
@@ -47,12 +46,12 @@ h3 a {
 }
 
 .performers {
-  font-size: 75%;
+  font-size: 85%;
   font-style: italic;
 }
 
 .programme {
-  font-size: 80%;
+  font-size: 90%;
   list-style-type: none;
   padding: 0;
 }
@@ -63,4 +62,8 @@ h3 a {
 
 .programme .composer {
   font-weight: bold;
+}
+
+.programme .duration {
+  font-style: italic;
 }

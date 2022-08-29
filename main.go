@@ -41,7 +41,7 @@ func main() {
 	http.HandleFunc("/proms/", promsList)
 	http.Handle("/proms/static/",
 		http.StripPrefix("/proms/static/", http.FileServer(http.Dir(""))))
-	http.ListenAndServe(":1895", nil)
+	http.ListenAndServe("127.0.0.1:1895", nil)
 }
 
 var londonLocs = []string{

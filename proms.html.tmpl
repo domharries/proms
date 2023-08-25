@@ -15,6 +15,7 @@
     </h2>
       {{range .Proms}}
         <div class="prom">
+          <p style="float: right"><a href="{{.Id}}.ics">📅</a></p>
           <h3><a href="{{.Url}}">{{.Time}} - {{.Name}} ({{.Location}})</a></h3>
           <div class="details">
             <ul class="programme">
@@ -22,7 +23,9 @@
                 <li>
                   <span class="composer">{{.Composer}}</span>
                   <span class="name">{{.Name}}</span>
-                  <span class="duration">{{.Duration}}</span>
+                  {{if .Duration}}
+                    <span class="duration">({{.Duration}} mins)</span>
+                  {{end}}
                 </li>
               {{end}}
             </ul>

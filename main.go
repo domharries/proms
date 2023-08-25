@@ -128,17 +128,22 @@ func refreshPromsList() []Prom {
 				}
 			}
 
-			for _, workNode := range cascadia.QueryAll(promNode,
+			for _, composerNode := range cascadia.QueryAll(promNode,
 				mustParseSel(".ev-act-schedule__performance-composer-segments"),
 			) {
-				durStr := textBySel(workNode, ".ev-act-schedule__performance-work-duration")
-				re := regexp.MustCompile(`\d+`)
-				duration, _ := strconv.Atoi(re.FindString(durStr))
-				prom.Programme = append(prom.Programme, Work{
-					Composer: textBySel(workNode, ".ev-act-schedule__performance-composers"),
-					Name:     textBySel(workNode, ".ev-act-schedule__performance-work-name"),
-					Duration: duration,
-				})
+				composer := textBySel(composerNode, ".ev-act-schedule__performance-composers")
+				for _, workNode := range cascadia.QueryAll(composerNode,
+					mustParseSel(".ev-act-schedule__performance-segment"),
+				) {
+					durStr := textBySel(workNode, ".ev-act-schedule__performance-work-duration")
+					re := regexp.MustCompile(`\d+`)
+					duration, _ := strconv.Atoi(re.FindString(durStr))
+					prom.Programme = append(prom.Programme, Work{
+						Composer: composer,
+						Name:     textBySel(workNode, ".ev-act-schedule__performance-work-name"),
+						Duration: duration,
+					})
+				}
 			}
 
 			for _, perfNode := range cascadia.QueryAll(promNode,

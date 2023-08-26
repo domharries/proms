@@ -200,7 +200,7 @@ const icalTimestampFormatUtc = "20060102T150405Z"
 
 func promIcal(w http.ResponseWriter, id string) {
 	var p *Prom
-	if p = promById(cache, id); p == nil {
+	if p = promById(cachedProms(), id); p == nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}

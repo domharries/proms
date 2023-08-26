@@ -41,6 +41,11 @@ h3 a {
   color: darkslateblue;
 }
 
+.interval {
+  display: block;
+  text-align: center;
+}
+
 .details {
   margin: 0 0.5em;
 }

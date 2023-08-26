@@ -39,6 +39,7 @@ type Prom struct {
 type Work struct {
 	Composer, Name string
 	Duration       int
+	Interval       bool
 }
 
 type Performer struct {
@@ -128,21 +129,27 @@ func refreshPromsList() []Prom {
 				}
 			}
 
-			for _, composerNode := range cascadia.QueryAll(promNode,
-				mustParseSel(".ev-act-schedule__performance-composer-segments"),
+			for _, progNode := range cascadia.QueryAll(promNode,
+				mustParseSel(".ev-act-schedule__performance-composer-segments-list>li"),
 			) {
-				composer := textBySel(composerNode, ".ev-act-schedule__performance-composers")
-				for _, workNode := range cascadia.QueryAll(composerNode,
-					mustParseSel(".ev-act-schedule__performance-segment"),
-				) {
-					durStr := textBySel(workNode, ".ev-act-schedule__performance-work-duration")
-					re := regexp.MustCompile(`\d+`)
-					duration, _ := strconv.Atoi(re.FindString(durStr))
-					prom.Programme = append(prom.Programme, Work{
-						Composer: composer,
-						Name:     textBySel(workNode, ".ev-act-schedule__performance-work-name"),
-						Duration: duration,
-					})
+				if interval := cascadia.Query(progNode,
+					mustParseSel(".ev-act-schedule__performance-segment-interval"),
+				); interval != nil {
+					prom.Programme = append(prom.Programme, Work{Interval: true, Duration: 20})
+				} else {
+					composer := textBySel(progNode, ".ev-act-schedule__performance-composers")
+					for _, workNode := range cascadia.QueryAll(progNode,
+						mustParseSel(".ev-act-schedule__performance-segment"),
+					) {
+						durStr := textBySel(workNode, ".ev-act-schedule__performance-work-duration")
+						re := regexp.MustCompile(`\d+`)
+						duration, _ := strconv.Atoi(re.FindString(durStr))
+						prom.Programme = append(prom.Programme, Work{
+							Composer: composer,
+							Name:     textBySel(workNode, ".ev-act-schedule__performance-work-name"),
+							Duration: duration,
+						})
+					}
 				}
 			}
 
@@ -214,7 +221,9 @@ func promIcal(w http.ResponseWriter, id string) {
 
 	var desc strings.Builder
 	for _, w := range p.Programme {
-		if w.Duration > 0 {
+		if w.Interval {
+			desc.WriteString("⁂\n")
+		} else if w.Duration > 0 {
 			desc.WriteString(
 				fmt.Sprintf("%s: %s (%d mins)\n", w.Composer, w.Name, w.Duration),
 			)

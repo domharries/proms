@@ -21,10 +21,14 @@
             <ul class="programme">
               {{range .Programme}}
                 <li>
-                  <span class="composer">{{.Composer}}</span>
-                  <span class="name">{{.Name}}</span>
-                  {{if .Duration}}
-                    <span class="duration">({{.Duration}} mins)</span>
+                  {{if .Interval}}
+                    <span class="interval">⁂</span>
+                  {{else}}
+                    <span class="composer">{{.Composer}}</span>
+                    <span class="name">{{.Name}}</span>
+                    {{if .Duration}}
+                      <span class="duration">({{.Duration}} mins)</span>
+                    {{end}}
                   {{end}}
                 </li>
               {{end}}

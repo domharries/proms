@@ -16,7 +16,11 @@
     </h2>
       {{range .Proms}}
         <div class="prom">
-          <p style="float: right"><a href="{{.Id}}.ics">📅</a></p>
+          <p style="float: right">
+            <a href="{{.Id}}.ics" data-umami-event="add-to-cal"
+              data-umami-event-prom-id="{{.Id}}"
+              data-umami-event-prom-name="{{.Name}}">📅</a>
+          </p>
           <h3><a href="{{.Url}}">{{.Time}} - {{.Name}} ({{.Location}})</a></h3>
           <div class="details">
             <ul class="programme">

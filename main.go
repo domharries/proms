@@ -111,13 +111,18 @@ func refreshPromsList() []Prom {
 		for _, promNode := range cascadia.QueryAll(dayNode,
 			mustParseSel("li[data-id-for-tests='event-summary']"),
 		) {
+			name := textBySel(promNode, ".ev-event-calendar__name")
 			startTime := textBySel(promNode, ".ev-event-calendar__time")
 			startStr := fmt.Sprintf("%s %s", dateStr, startTime)
-			start, _ := time.ParseInLocation("Mon 2 Jan 2006 15:04", startStr, lon)
+			start, err := time.ParseInLocation("Mon 2 Jan 2006 15:04", startStr, lon)
+			if err != nil {
+				log.Printf("Malformed date for prom: %s", name)
+				continue // skip it
+			}
 			prom := Prom{
 				Start:    start,
 				Time:     startTime,
-				Name:     textBySel(promNode, ".ev-event-calendar__name"),
+				Name:     name,
 				Location: textBySel(promNode, ".ev-event-calendar__event-location"),
 				Desc:     textBySel(promNode, ".ev-event-calendar__event-description"),
 			}

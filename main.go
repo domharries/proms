@@ -200,6 +200,7 @@ func promsList(w http.ResponseWriter) {
 			}
 		}
 	}
+	days = append(days, day)
 
 	t, _ := template.ParseFiles("proms.html.tmpl")
 	err := t.Execute(w, days)

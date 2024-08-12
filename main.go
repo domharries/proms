@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"embed"
 	"fmt"
 	"html/template"
 	"io"
@@ -19,9 +18,6 @@ import (
 	ics "github.com/arran4/golang-ical"
 	"golang.org/x/net/html"
 )
-
-//go:embed *.tmpl *.css
-var tmpl embed.FS
 
 type Day struct {
 	Date  time.Time
@@ -56,16 +52,10 @@ var (
 var lon, _ = time.LoadLocation("Europe/London")
 
 func main() {
-	http.HandleFunc("/proms/", func(w http.ResponseWriter, req *http.Request) {
-		re := regexp.MustCompile(`(\w+)\.ics`)
-		if matches := re.FindStringSubmatch(req.URL.Path); len(matches) == 2 {
-			promIcal(w, matches[1])
-		} else {
-			promsList(w)
-		}
-	})
+	http.HandleFunc("/proms/", promsList)
+	http.HandleFunc("/proms/{id}.ics", promIcal)
 	http.Handle("/proms/static/",
-		http.StripPrefix("/proms/static/", http.FileServer(http.Dir(""))))
+		http.StripPrefix("/proms/static/", http.FileServer(http.Dir("./static"))))
 	http.ListenAndServe("127.0.0.1:1895", nil)
 }
 
@@ -180,7 +170,7 @@ func refreshPromsList() []Prom {
 	return proms
 }
 
-func promsList(w http.ResponseWriter) {
+func promsList(w http.ResponseWriter, _ *http.Request) {
 	var (
 		days []Day
 		day  Day
@@ -215,7 +205,8 @@ func promsList(w http.ResponseWriter) {
 	}
 }
 
-func promIcal(w http.ResponseWriter, id string) {
+func promIcal(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
 	var p *Prom
 	if p = promById(cachedProms(), id); p == nil {
 		w.WriteHeader(http.StatusNotFound)

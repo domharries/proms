@@ -28,7 +28,7 @@ jobs:
 
       - name: Deploy
         run: |
-          rsync proms *.tmpl style.css github@h5s.org:proms/
+          rsync -r proms *.tmpl static github@h5s.org:proms/
           ssh github@h5s.org sudo systemctl restart proms
 
       - name: Smoke test

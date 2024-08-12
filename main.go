@@ -29,12 +29,12 @@ type Day struct {
 }
 
 type Prom struct {
-	Id                         string
-	Start, End                 time.Time
-	Time, Name, Location, Desc string
-	Programme                  []Work
-	Performers                 []Performer
-	Url                        string
+	Id                   string
+	Start, End           time.Time
+	Name, Location, Desc string
+	Programme            []Work
+	Performers           []Performer
+	Url                  string
 }
 
 type Work struct {
@@ -122,7 +122,6 @@ func refreshPromsList() []Prom {
 			}
 			prom := Prom{
 				Start:    start,
-				Time:     startTime,
 				Name:     name,
 				Location: textBySel(promNode, ".ev-event-calendar__event-location"),
 				Desc:     textBySel(promNode, ".ev-event-calendar__event-description"),

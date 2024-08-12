@@ -34,7 +34,9 @@
               data-umami-event-prom-id="{{.Id}}"
               data-umami-event-prom-name="{{.Name}}">G</a>
           </div>
-          <h3><a href="{{.Url}}">{{.Time}} - {{.Name}} ({{.Location}})</a></h3>
+          <h3><a href="{{.Url}}">
+            {{.Start.Format "15:04"}} - {{.Name}} ({{.Location}})
+          </a></h3>
           <div class="details">
             <ul class="programme">
               {{range .Programme}}

@@ -1,0 +1,10 @@
+{{range .Programme}}
+{{- if .Interval -}}
+  ⁂
+{{- else -}}
+  {{.Composer}}: {{.Name}}{{if gt .Duration 0}} ({{.Duration}} mins){{end}}
+{{- end}}
+{{end}}
+{{range .Performers -}}
+{{.Name}}{{if .Role}} ({{.Role}}){{end}}
+{{end -}}

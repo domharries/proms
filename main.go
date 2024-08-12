@@ -225,26 +225,12 @@ func promIcal(w http.ResponseWriter, id string) {
 	event.SetLocation(p.Location)
 	event.SetURL(p.Url)
 
-	var desc strings.Builder
-	for _, w := range p.Programme {
-		if w.Interval {
-			desc.WriteString("⁂\n")
-		} else if w.Duration > 0 {
-			desc.WriteString(
-				fmt.Sprintf("%s: %s (%d mins)\n", w.Composer, w.Name, w.Duration),
-			)
-		} else {
-			desc.WriteString(fmt.Sprintf("%s: %s\n", w.Composer, w.Name))
-		}
+	var desc bytes.Buffer
+	t, err := template.ParseFiles("ical.txt.tmpl")
+	if err != nil {
+		log.Fatal(err)
 	}
-	desc.WriteByte('\n')
-	for _, n := range p.Performers {
-		if n.Role != "" {
-			desc.WriteString(fmt.Sprintf("%s (%s)\n", n.Name, n.Role))
-		} else {
-			desc.WriteString(fmt.Sprintln(n.Name))
-		}
-	}
+	err = t.Execute(&desc, p)
 	event.SetDescription(desc.String())
 
 	// reminder 1 day before

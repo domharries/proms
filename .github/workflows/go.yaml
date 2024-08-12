@@ -30,3 +30,6 @@ jobs:
         run: |
           rsync proms *.tmpl style.css github@h5s.org:proms/
           ssh github@h5s.org sudo systemctl restart proms
+
+      - name: Smoke test
+        run: curl -fsSL -o /dev/null https://dom.h5s.org/proms/

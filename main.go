@@ -29,7 +29,7 @@ type Day struct {
 
 type Prom struct {
 	Id                         string
-	Start                      time.Time
+	Start, End                 time.Time
 	Time, Name, Location, Desc string
 	Programme                  []Work
 	Performers                 []Performer
@@ -171,6 +171,8 @@ func refreshPromsList() []Prom {
 				return prom.Performers[i].Role < prom.Performers[j].Role
 			})
 
+			prom.End = calculateEnd(&prom)
+
 			proms = append(proms, prom)
 		}
 	}
@@ -221,7 +223,7 @@ func promIcal(w http.ResponseWriter, id string) {
 	event := cal.AddEvent(id + "@h5s.org")
 	event.SetSummary(p.Name)
 	event.SetStartAt(p.Start)
-	event.SetEndAt(calculateEnd(p))
+	event.SetEndAt(p.End)
 	event.SetLocation(p.Location)
 	event.SetURL(p.Url)
 

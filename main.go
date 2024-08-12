@@ -53,7 +53,7 @@ var lon, _ = time.LoadLocation("Europe/London")
 
 func main() {
 	http.HandleFunc("/proms/", promsList)
-	http.HandleFunc("/proms/{id}.ics", promIcal)
+	http.HandleFunc("/proms/{id}", promIcal)
 	http.Handle("/proms/static/",
 		http.StripPrefix("/proms/static/", http.FileServer(http.Dir("./static"))))
 	http.ListenAndServe("127.0.0.1:1895", nil)
@@ -206,7 +206,7 @@ func promsList(w http.ResponseWriter, _ *http.Request) {
 }
 
 func promIcal(w http.ResponseWriter, r *http.Request) {
-	id := r.PathValue("id")
+	id := strings.TrimSuffix(r.PathValue("id"), ".ics")
 	var p *Prom
 	if p = promById(cachedProms(), id); p == nil {
 		w.WriteHeader(http.StatusNotFound)

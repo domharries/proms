@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"embed"
 	"fmt"
 	"html/template"
@@ -204,8 +205,11 @@ func promsList(w http.ResponseWriter) {
 	}
 	days = append(days, day)
 
-	t, _ := template.ParseFiles("proms.html.tmpl")
-	err := t.Execute(w, days)
+	t, err := template.ParseFiles("proms.html.tmpl", "ical.txt.tmpl")
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = t.Execute(w, days)
 	if err != nil {
 		log.Fatal(err)
 	}

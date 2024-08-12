@@ -19,11 +19,21 @@
     </h2>
       {{range .Proms}}
         <div class="prom">
-          <p style="float: right">
+          <div class="add-links">
             <a href="{{.Id}}.ics" data-umami-event="add-to-cal"
               data-umami-event-prom-id="{{.Id}}"
               data-umami-event-prom-name="{{.Name}}">📅</a>
-          </p>
+            <a class="gcal"
+              href="https://calendar.google.com/calendar/render?action=TEMPLATE{{"" -}}
+                &text={{.Name -}}
+                &dates={{.Start.Format "20060102T150405"}}/{{.End.Format "20060102T150405" -}}
+                &details={{template "ical.txt.tmpl" . -}}
+                &location={{.Location -}}
+              "
+              data-umami-event="add-to-gcal"
+              data-umami-event-prom-id="{{.Id}}"
+              data-umami-event-prom-name="{{.Name}}">G</a>
+          </div>
           <h3><a href="{{.Url}}">{{.Time}} - {{.Name}} ({{.Location}})</a></h3>
           <div class="details">
             <ul class="programme">

@@ -1,6 +1,6 @@
 body {
   font-family: sans-serif;
-  color: #333; 
+  color: #333;
   margin: 0;
   padding: 0;
 }
@@ -71,4 +71,19 @@ h3 a {
 
 .programme .duration {
   font-style: italic;
+}
+
+.add-links {
+  float: right;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 0.5rem;
+  gap: 0.5rem;
+}
+
+.gcal {
+  color: #09a744;
+  text-decoration: none;
+  font-weight: bold;
 }

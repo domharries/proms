@@ -26,7 +26,7 @@
             <a class="gcal"
               href="https://calendar.google.com/calendar/render?action=TEMPLATE{{"" -}}
                 &text={{.Name -}}
-                &dates={{.Start.Format "20060102T150405"}}/{{.End.Format "20060102T150405" -}}
+                &dates={{.Start | icaltime}}/{{.End | icaltime -}}
                 &details={{template "ical.txt.tmpl" . -}}
                 &location={{.Location -}}
               "

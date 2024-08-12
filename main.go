@@ -205,17 +205,16 @@ func promsList(w http.ResponseWriter) {
 	}
 	days = append(days, day)
 
-	t, err := template.ParseFiles("proms.html.tmpl", "ical.txt.tmpl")
-	if err != nil {
+	t := template.New("proms.html.tmpl").Funcs(map[string]any{
+		"icaltime": icalTime,
+	})
+	if _, err := t.ParseFiles("proms.html.tmpl", "ical.txt.tmpl"); err != nil {
 		log.Fatal(err)
 	}
-	err = t.Execute(w, days)
-	if err != nil {
+	if err := t.Execute(w, days); err != nil {
 		log.Fatal(err)
 	}
 }
-
-const icalTimestampFormatUtc = "20060102T150405Z"
 
 func promIcal(w http.ResponseWriter, id string) {
 	var p *Prom
@@ -248,10 +247,14 @@ func promIcal(w http.ResponseWriter, id string) {
 	tktAlarm := event.AddAlarm()
 	tktAlarm.SetAction(ics.ActionAudio)
 	tktTime := time.Date(p.Start.Year(), p.Start.Month(), p.Start.Day(), 10, 25, 0, 0, lon)
-	tktAlarm.SetTrigger(tktTime.UTC().Format(icalTimestampFormatUtc))
+	tktAlarm.SetTrigger(icalTime(tktTime))
 
 	w.Header().Add("Content-Type", "text/calendar")
 	cal.SerializeTo(w)
+}
+
+func icalTime(t time.Time) string {
+	return t.UTC().Format("20060102T150405Z")
 }
 
 func promById(proms []Prom, id string) *Prom {

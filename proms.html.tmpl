@@ -13,10 +13,7 @@
 {{range .}}
   <div class="day" id="{{.Date.Format "2006-01-02"}}"
       style="grid-column-start: {{.Date.Weekday | printf "%d"}}">
-    <h2>
-      {{.Date.Format "Mon 2"}}
-      {{if eq .Date.Day 1}}{{.Date.Format "Jan"}}{{end}}
-    </h2>
+    <h2>{{.Date.Format "Mon 2 Jan"}}</h2>
       {{range .Proms}}
         <div class="prom">
           <div class="add-links">

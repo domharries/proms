@@ -233,10 +233,10 @@ func promIcal(w http.ResponseWriter, r *http.Request) {
 	preAlarm.SetAction(ics.ActionAudio)
 	preAlarm.SetTrigger("-P1D")
 
-	// ticket reminder at 10:25
+	// ticket reminder at 9:25
 	tktAlarm := event.AddAlarm()
 	tktAlarm.SetAction(ics.ActionAudio)
-	tktTime := time.Date(p.Start.Year(), p.Start.Month(), p.Start.Day(), 10, 25, 0, 0, lon)
+	tktTime := time.Date(p.Start.Year(), p.Start.Month(), p.Start.Day(), 9, 25, 0, 0, lon)
 	tktAlarm.SetTrigger(icalTime(tktTime))
 
 	w.Header().Add("Content-Type", "text/calendar")

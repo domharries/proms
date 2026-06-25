@@ -67,24 +67,29 @@ var londonLocs = []string{
 
 func cachedProms() []Prom {
 	if len(cache) == 0 || time.Since(cacheUpdated) > cacheTime {
-		cache = refreshPromsList()
+		proms, err := refreshPromsList()
+		if err != nil {
+			log.Printf("failed to refresh proms list: %v", err)
+			return cache // serve stale data rather than crashing
+		}
+		cache = proms
 		cacheUpdated = time.Now()
 	}
 	return cache
 }
 
-func refreshPromsList() []Prom {
+func refreshPromsList() ([]Prom, error) {
 	var bbcList io.Reader
 	if localFile := os.Getenv("LOCAL"); localFile == "" {
 		year := time.Now().Year()
 		url := fmt.Sprintf("https://www.bbc.co.uk/proms/events/by/date/%d", year)
 		res, err := http.Get(url)
 		if err != nil {
-			log.Fatal(err)
+			return nil, err
 		}
 		defer res.Body.Close()
 		if res.StatusCode != 200 {
-			log.Fatalf("status code error: %d %s", res.StatusCode, res.Status)
+			return nil, fmt.Errorf("status code error: %d %s", res.StatusCode, res.Status)
 		}
 		bbcList = res.Body
 	} else {
@@ -167,7 +172,7 @@ func refreshPromsList() []Prom {
 		}
 	}
 
-	return proms
+	return proms, nil
 }
 
 func promsList(w http.ResponseWriter, _ *http.Request) {

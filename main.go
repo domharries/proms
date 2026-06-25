@@ -83,7 +83,13 @@ func refreshPromsList() ([]Prom, error) {
 	if localFile := os.Getenv("LOCAL"); localFile == "" {
 		year := time.Now().Year()
 		url := fmt.Sprintf("https://www.bbc.co.uk/proms/events/by/date/%d", year)
-		res, err := http.Get(url)
+		req, err := http.NewRequest(http.MethodGet, url, nil)
+		if err != nil {
+			return nil, err
+		}
+		req.Header.Set("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "+
+			"AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36")
+		res, err := http.DefaultClient.Do(req)
 		if err != nil {
 			return nil, err
 		}
